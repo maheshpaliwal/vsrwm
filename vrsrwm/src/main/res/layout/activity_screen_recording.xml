@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+>
+
+    <FrameLayout
+            android:id="@+id/customCamera"
+
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+
+    />
+    <ImageButton
+            android:id="@+id/record2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:backgroundTint="#10000000"
+
+
+            android:src="@drawable/start3"
+    />
+    <ImageButton
+            android:id="@+id/videoSnapshot2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:backgroundTint="#10000000"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/snapshot"
+    />
+    <ImageView android:layout_width="150dp" android:layout_height="30dp"
+               android:src="@drawable/demo"
+               android:layout_marginTop="5dp"
+               android:layout_marginStart="5dp"
+               android:layout_alignParentTop="true"
+               android:id="@+id/logo3"/>
+
+    <Chronometer android:layout_width="wrap_content" android:layout_height="wrap_content"
+                 android:layout_alignParentTop="true"
+                 android:layout_centerHorizontal="true"
+                 android:id="@+id/timer2"
+                 android:layout_marginTop="8dp"
+                 android:textSize="18sp"
+                 android:textColor="#fff"/>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+              android:layout_alignParentRight="true"/>
+
+
+
+</RelativeLayout>
