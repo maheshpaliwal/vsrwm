@@ -15,7 +15,7 @@ allprojects {
 ### Step 2. Add the dependency
 ```
 dependencies {
-	        implementation 'com.github.maheshpaliwal:vsrwm:Tag'
+	        implementation 'com.github.maheshpaliwal:vsrwm:1.0'
 	}
 ```
 ## Why this library ?
