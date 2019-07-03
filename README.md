@@ -1,7 +1,7 @@
 # WaterMark-ScreenRecorder
 [![](https://jitpack.io/v/maheshpaliwal/vsrwm.svg)](https://jitpack.io/#maheshpaliwal/vsrwm)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmaheshpaliwal%2Fvsrwm.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmaheshpaliwal%2Fvsrwm?ref=badge_shield)
-### Android library for screen recording, video recording, capturing snapshots while recording, watermark and video compression while recording.
+### Android library for video recording with watermark
 ## To get a Git project into your build:
 
 ### Step 1. Add the JitPack repository to your build file
