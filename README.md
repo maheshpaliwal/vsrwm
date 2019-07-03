@@ -1,7 +1,7 @@
 # WaterMark-ScreenRecorder
 [![](https://jitpack.io/v/maheshpaliwal/vsrwm.svg)](https://jitpack.io/#maheshpaliwal/vsrwm)
 ### Android library for screen recording, video recording, capturing snapshots while recording, watermark and video compression while recording.
-##To get a Git project into your build:
+## To get a Git project into your build:
 
 ### Step 1. Add the JitPack repository to your build file
 ```
