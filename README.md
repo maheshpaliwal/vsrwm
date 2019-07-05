@@ -24,7 +24,7 @@ dependencies {
 
 #### You can capture images while recording
 #### You can record screen with just few lines of code
-#### You can apply Waterark on Images 
+#### You can apply Watermark on Images 
 #### If you want to record video in lower size while maintaining quality of video then this is the best library for you
 
 # Basic Features
