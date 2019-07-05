@@ -1,4 +1,4 @@
-# WaterMark-ScreenRecorder
+# Video recording with watermark (kotlin)
 [![](https://jitpack.io/v/maheshpaliwal/vsrwm.svg)](https://jitpack.io/#maheshpaliwal/vsrwm)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmaheshpaliwal%2Fvsrwm.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmaheshpaliwal%2Fvsrwm?ref=badge_shield)
 ### Android library for video recording with watermark
@@ -19,42 +19,37 @@ dependencies {
 	        implementation 'com.github.maheshpaliwal:vsrwm:1.0'
 	}
 ```
+### Android (kotlin) video recording with watermark
 ## Why this library ?
-#### You can use default camera which records video with lower file size
-#### You can capture images in just a few lines of code
-#### You can record screen in just few lines of code
+
+#### You can capture images while recording
+#### You can record screen with just few lines of code
 #### You can apply Waterark on Images 
 #### If you want to record video in lower size while maintaining quality of video then this is the best library for you
-#### Check permissions
-#### Save image from bitmap
-#### Get Bitmp from image
 
-# Usage
-## By using default camera of library
-### Pass your logo, folder name and activity(where this library will post data after recording)
+# Basic Features
+### Pass your logo(watermark), folder name and activity(where this library will post data after recording)
 ```
 // call default activity from library 
  val intent:Intent=Intent(this@MainActivity,ScreenRecording::class.java)
-                intent.putExtra("class","com.example.test.WaterMarkActivity")// class where library will redirectafter screen recording or capturing images
-                intent.putExtra("logo",R.drawable.pb) // add your custom logo
-                intent.putExtra("customFolderName","MYAPP") // YOUR FOLDERNAME where file will be saved
-                startActivity(intent)
+ intent.putExtra("class","com.example.test.WaterMarkActivity")// class where library will redirectafter screen recording or capturing images
+ intent.putExtra("logo",R.drawable.pb) // add your custom logo
+ intent.putExtra("customFolderName","MYAPP") // YOUR FOLDERNAME where file will be saved
+ startActivity(intent)
 // do not forget to recieve data in another activity
-
 ```
 ### Recieve data
-
 ```
-  val pathToVideo = intent.getStringExtra("videopath") // path to saved video
-   val images = intent.getStringArrayListExtra("images") // array containing paths of images
+val pathToVideo = intent.getStringExtra("videopath") // path to saved video
+val images = intent.getStringArrayListExtra("images") // array containing paths of images
 ```
-## If you want to customize everything 
+# Custom Features
 ### Check permissions
 ```
 //checkPermissions(context: Context,permissionArray: Array<String>)
 var recorder:Recorder=Recorder()
 val permissions= arrayOf<String>(android.Manifest.permission.CAMERA,android.Manifest.permission.READ_EXTERNAL_STORAGE,android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            android.Manifest.permission.RECORD_AUDIO,android.Manifest.permission.WAKE_LOCK,android.Manifest.permission.INTERNET,android.Manifest.permission.ACCESS_NETWORK_STATE)
+      android.Manifest.permission.RECORD_AUDIO,android.Manifest.permission.WAKE_LOCK,android.Manifest.permission.INTERNET,android.Manifest.permission.ACCESS_NETWORK_STATE)
 recorder.checkPermissions(this,permissions)
 ```
 ### An example to use library for capturing images
@@ -131,3 +126,4 @@ val bitmap:Bitmap=recorder.getBitmap(pathToFile)
     public override fun onDestroy() { super.onDestroy()
         recorder.destroyMediaProjection(mMediaProjection!!,mMediaProjectionCallback!!) }
 ````
+
