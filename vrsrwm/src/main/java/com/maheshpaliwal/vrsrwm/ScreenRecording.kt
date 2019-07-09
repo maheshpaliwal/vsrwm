@@ -47,8 +47,6 @@ class ScreenRecording : AppCompatActivity() {
     var pathnameLogo:String?=null // logo path (uri)
     var chronometer: Chronometer?=null // count up timer
     private var snapshotsArray =ArrayList<String>()
-    private val autoFocusExecutor= ScheduledThreadPoolExecutor(1)
-    private var index:Int=0
     private var mScreenDensity:Int = 0 // Screen Density variable
     private var mProjectionManager: MediaProjectionManager? = null // Projection manager variable
     private var btn_action: ImageButton?=null // Button to capture video
@@ -58,66 +56,67 @@ class ScreenRecording : AppCompatActivity() {
     private var mMediaRecorder: MediaRecorder? = null // mediarecorder to set up camera parameters video/audio source, encoding , frame rate etc
     internal var isRecording = false // keeping track of recording
     var customFolderName:String?=null
-    var mediaRecorder: MediaRecorder?=null
     var conClass:Class<*>?=null
+    var snapshot: ImageButton?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_screen_recording)
-        val permissions= arrayOf<String>(android.Manifest.permission.CAMERA,android.Manifest.permission.READ_EXTERNAL_STORAGE,android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            android.Manifest.permission.RECORD_AUDIO,android.Manifest.permission.WAKE_LOCK,android.Manifest.permission.INTERNET,android.Manifest.permission.ACCESS_NETWORK_STATE)
-        if(!Recorder.recorder.checkPermissions(this, permissions )){
-            ActivityCompat.requestPermissions(this,permissions,PERMISSION_CODE)
-        }
-        var myclass:String=intent.getStringExtra("class")
-        var drawableLogo:Int=intent.getIntExtra("logo",0)
-        customFolderName=intent.getStringExtra("customFolderName")
-        conClass =Class.forName(myclass)
-        val customLogo:ImageView=this.logo3
+        var myclass: String = intent.getStringExtra("class")
+        var drawableLogo: Int = intent.getIntExtra("logo", 0)
+        customFolderName = intent.getStringExtra("customFolderName")
+        conClass = Class.forName(myclass)
+        val customLogo: ImageView = this.logo3
         customLogo.setImageDrawable(applicationContext.resources.getDrawable(drawableLogo))
-        chronometer=this.timer2 // initialize count up timer
+        chronometer = this.timer2 // initialize count up timer
         val metrics = DisplayMetrics() // initialize display metrics variable
         windowManager.defaultDisplay.getMetrics(metrics) // getting display metrics in metrics variable
         mScreenDensity = metrics.densityDpi  // density of screen
-        DISPLAY_HEIGHT=metrics.heightPixels // height  of screen
-        DISPLAY_WIDTH=metrics.widthPixels // width of screen
+        DISPLAY_HEIGHT = metrics.heightPixels // height  of screen
+        DISPLAY_WIDTH = metrics.widthPixels // width of screen
+        snapshot = this.videoSnapshot2// button for snapshot
 
-        // getting logo
-        //val bitmap:Bitmap=(imageView.getDrawable() as BitmapDrawable).getBitmap()// converting imageView to drawable
-        //storeImage(bitmap) // storing bitmap by converting it to jpeg/png/jpg format
-        val snapshot: ImageButton =this.videoSnapshot2// button for snapshot
+        val permissions = arrayOf<String>(
+            android.Manifest.permission.CAMERA,
+            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            android.Manifest.permission.RECORD_AUDIO,
+            android.Manifest.permission.WAKE_LOCK,
+            android.Manifest.permission.INTERNET,
+            android.Manifest.permission.ACCESS_NETWORK_STATE
+        )
+        if (!Recorder.recorder.checkPermissions(this, permissions)) {
+            ActivityCompat.requestPermissions(this, permissions, PERMISSION_CODE)
+        } else{
         mCamera = Camera.open() //opening camera
-        recorder.setCameraParameters(mCamera,this)
-        cameraSurface=CameraSurface(this,mCamera!!)
-
-        // mShowCamera = mCamera?.let {
-        //     showCamera(this, it) // calling surfaceview class
-        // }
+        recorder.setCameraParameters(mCamera, this)
+        cameraSurface = CameraSurface(this, mCamera!!)
         cameraSurface?.also {
-            val customLayout: FrameLayout = this.findViewById<FrameLayout>(R.id.customCamera) // adding view in framelayout
+            val customLayout: FrameLayout =
+                this.findViewById<FrameLayout>(R.id.customCamera) // adding view in framelayout
             customLayout.addView(it)
         }
-        mProjectionManager = getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager// Media Preojection Manager
-        btn_action=findViewById<ImageButton>(R.id.record2) // initialize record button
-        mMediaProjection=null
+        mProjectionManager =
+            getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager// Media Preojection Manager
+        btn_action = findViewById<ImageButton>(R.id.record2) // initialize record button
+        mMediaProjection = null
         var displayMatrics: DisplayMetrics = DisplayMetrics()
         windowManager!!.defaultDisplay!!.getMetrics(displayMatrics)// screen metrics
-        mScreenDensity=displayMatrics.densityDpi // screen density
-        btn_action?.setOnClickListener{
+        mScreenDensity = displayMatrics.densityDpi // screen density
+        btn_action?.setOnClickListener {
             onToggleScreenShare() // decide what to do on the basis of recording status
         }
-
-        snapshot.setOnClickListener {
-            val pathToLocation: File?=recorder.getOutputMediaFile(1,customFolderName)
-            recorder.takePicture(it,mCamera!!,customFolderName,false,null,pathToLocation,null)
+        snapshot!!.setOnClickListener {
+            val pathToLocation: File? = recorder.getOutputMediaFile(1, customFolderName)
+            recorder.takePicture(it, mCamera!!, customFolderName, false, null, pathToLocation, null)
             snapshotsArray.add(pathToLocation.toString())
         }
+    }
     }
 
     /** Create a file Uri for saving an image or video */
     private fun getOutputMediaFileUri(type: Int): Uri {
         return Uri.fromFile(getOutputMediaFile(type))
     }
-
     /** Create a File for saving an image or video */
     private fun getOutputMediaFile(type: Int): File? {
         // To be safe, you should check that the SDCard is mounted
@@ -179,7 +178,6 @@ class ScreenRecording : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
     private fun stopScreenSharing() {
         if (mVirtualDisplay == null)
         { return
@@ -220,11 +218,34 @@ class ScreenRecording : AppCompatActivity() {
         when (requestCode) {
             requestPermissionKey -> {
                 if ((grantResults.size > 0) && (grantResults[0] + grantResults[1]) == PackageManager.PERMISSION_GRANTED)
-                { onToggleScreenShare()
+                {   mCamera = Camera.open() //opening camera
+                    recorder.setCameraParameters(mCamera, this)
+                    cameraSurface = CameraSurface(this, mCamera!!)
+                    cameraSurface?.also {
+                        val customLayout: FrameLayout =
+                            this.findViewById<FrameLayout>(R.id.customCamera) // adding view in framelayout
+                        customLayout.addView(it)
+                    }
+                    mProjectionManager =
+                        getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager// Media Preojection Manager
+                    btn_action = findViewById<ImageButton>(R.id.record2) // initialize record button
+                    mMediaProjection = null
+                    var displayMatrics: DisplayMetrics = DisplayMetrics()
+                    windowManager!!.defaultDisplay!!.getMetrics(displayMatrics)// screen metrics
+                    mScreenDensity = displayMatrics.densityDpi // screen density
+                    btn_action?.setOnClickListener {
+                        onToggleScreenShare() // decide what to do on the basis of recording status
+                    }
+                    snapshot!!.setOnClickListener {
+                        val pathToLocation: File? = recorder.getOutputMediaFile(1, customFolderName)
+                        recorder.takePicture(it, mCamera!!, customFolderName, false, null, pathToLocation, null)
+                        snapshotsArray.add(pathToLocation.toString())
+                    }
+                    onToggleScreenShare()
+
                 }
                 else
                 {   isRecording = false
-
                 }
                 return
             }
