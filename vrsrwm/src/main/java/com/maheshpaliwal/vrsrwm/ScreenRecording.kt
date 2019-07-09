@@ -60,16 +60,6 @@ class ScreenRecording : AppCompatActivity() {
     var customFolderName:String?=null
     var mediaRecorder: MediaRecorder?=null
     var conClass:Class<*>?=null
-    private fun releaseMediaRecorder() {
-        mediaRecorder?.reset() // clear recorder configuration
-        mediaRecorder?.release() // release the recorder object
-        mediaRecorder = null
-        mCamera?.lock() // lock camera for later use
-    }
-    private fun releaseCamera() {
-        mCamera?.release() // release the camera for other applications
-        mCamera = null
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_screen_recording)
@@ -151,7 +141,6 @@ class ScreenRecording : AppCompatActivity() {
         return when (type) {
             mediaTypeImage -> {
                 pathnameLogo="${mediaStorageDir.path}${File.separator}IMG_$timeStamp.png"
-
                 snapshotsArray.add(pathnameLogo!!)
                 File("${mediaStorageDir.path}${File.separator}IMG_$timeStamp.png")
             }
@@ -291,27 +280,4 @@ class ScreenRecording : AppCompatActivity() {
         isRecording = true // setting recording status true
         recorder.actionBtnImageReload(btn_action!!,isRecording,this,R.drawable.stop,R.drawable.start3)
     }
-    fun storeImageClaim( image: Bitmap){
-        val file: File? =getOutputMediaFile(mediaTypeImage)
-        var fileOutputStream: FileOutputStream = FileOutputStream(file)
-        image.compress(Bitmap.CompressFormat.JPEG,100,fileOutputStream)
-        fileOutputStream.close()
-    }
-
-    fun autoFocus(mCamera:Camera){
-        autoFocusExecutor.schedule({
-            val params: Camera.Parameters = mCamera.parameters
-            if (params.supportedFocusModes.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
-                params.focusMode = Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE
-
-
-            }
-            mCamera.parameters = params
-        },100, TimeUnit.MILLISECONDS)
-
-
-
-
-    }
-
 }
